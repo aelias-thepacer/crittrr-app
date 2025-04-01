@@ -5,7 +5,7 @@ import ThoughtForm from '../components/ThoughtForm/index.tsx';
 
 import { QUERY_THOUGHTS } from '../utils/queries.ts';
 
-const Home = () => {
+const HomePage = () => {
   const { loading, data } = useQuery(QUERY_THOUGHTS);
   const thoughts = data?.thoughts || [];
 
@@ -33,4 +33,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;
