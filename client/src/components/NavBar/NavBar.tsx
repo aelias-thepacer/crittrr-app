@@ -18,7 +18,7 @@ const NavBar = () => {
       <div
         className={`container flex-row ${isFavoritesPage ? 'justify-center' : 'justify-space-between-lg justify-center align-center'}`}
       >
-        <div>
+        <div style={{ textAlign: 'center', flex: 1 }}>
           {/* Only render the "Hello" message if not on the Favorites page */}
           {location.pathname !== '/FavoritesPage' && Auth.loggedIn() && (
             <Link className="text-light" to="/">
@@ -32,11 +32,11 @@ const NavBar = () => {
             <>
               <Link className="btn btn-lg btn-info m-2" to="/me">
                 {/* Retrieving the logged-in user's profile to display the username */}
-                {Auth.getProfile().data.username}'s profile
+                {Auth.getProfile().data.username}'s Favorites
               </Link>
-              <Link to="/FavoritesPage">
+              {/* <Link to="/FavoritesPage">
                 Favorites
-              </Link>
+              </Link> */}
               <button className="btn btn-lg btn-light m-2" onClick={logout}>
                 Logout
               </button>
