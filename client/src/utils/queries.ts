@@ -15,6 +15,18 @@ export const QUERY_USER = gql`
   }
 `;
 
+export const QUERY_ANIMALS = gql`
+  query getAnimals {
+    animals {
+      _id
+      commonName
+      scientificName
+      conservationStatus
+      imageLink
+    }
+  }
+`;
+
 export const QUERY_THOUGHTS = gql`
   query getThoughts {
     thoughts {

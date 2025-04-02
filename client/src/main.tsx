@@ -6,7 +6,6 @@ import App from './App.jsx';
 import HomePage from './pages/HomePage.js';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
-import SingleThought from './pages/SingleThought';
 import Profile from './pages/Profile.js';
 import ErrorPage from './pages/Error';
 import FavoritesPage from './pages/FavoritesPage';
@@ -36,9 +35,6 @@ const router = createBrowserRouter([
       }, {
         path: '/me',
         element: <Profile />
-      }, {
-        path: '/thoughts/:thoughtId',
-        element: <SingleThought />
       }
     ]
   },
