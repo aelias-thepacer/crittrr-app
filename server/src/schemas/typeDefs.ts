@@ -27,6 +27,7 @@ const typeDefs = `
   }
 
   type Query {
+    animals: [Animal]
     favoriteAnimals: [Animal]
     me: User
   }
