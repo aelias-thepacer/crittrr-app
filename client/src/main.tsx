@@ -8,7 +8,7 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Profile from './pages/Profile.js';
 import ErrorPage from './pages/Error';
-import FavoritesPage from './pages/FavoritesPage';
+// import FavoritesPage from './pages/FavoritesPage';
 
 const router = createBrowserRouter([
   {
@@ -22,10 +22,10 @@ const router = createBrowserRouter([
       }, {
         path: '/login',
         element: <Login />
-      }, {
-        path: '/FavoritesPage',
-        element: <FavoritesPage />
-      },
+       }, //{
+      //   path: '/FavoritesPage',
+      //   element: <FavoritesPage />
+      // },
       {
         path: '/signup',
         element: <Signup />
