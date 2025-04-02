@@ -1,10 +1,10 @@
-// import { useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 
-// import { QUERY_ANIMALS } from '../utils/queries.ts';
+import { QUERY_ANIMALS } from '../utils/queries.ts';
 
 const HomePage = () => {
-  // const { loading, data } = useQuery(QUERY_ANIMALS);
-  // const animal = data?.animals || [];
+  const { loading, data } = useQuery(QUERY_ANIMALS);
+  const animal = data?.animals || [];
 
   return (
     <main>
@@ -23,19 +23,19 @@ const HomePage = () => {
               <h2>Do you like this animal?</h2>
               <h3>"Click ❤️ to add to favorites!"</h3>
               <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-              <div>
-                <img 
-                src="https://via.placeholder.com/150" 
-                alt="Animal" 
-                style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '10px' }} 
-                />
-              </div>
-              <button style={{ padding: '10px', backgroundColor: 'darkorange', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-                ❌
-              </button>
-              <button style={{ padding: '10px', backgroundColor: 'lightgreen', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-                ❤️
-              </button>
+                <div>
+                  <img
+                    src="https://via.placeholder.com/150"
+                    alt="Animal"
+                    style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '10px' }}
+                  />
+                </div>
+                <button style={{ padding: '10px', backgroundColor: 'darkorange', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+                  ❌
+                </button>
+                <button style={{ padding: '10px', backgroundColor: 'lightgreen', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+                  ❤️
+                </button>
               </div>
             </div>
           )}
