@@ -1,12 +1,10 @@
-import { useQuery } from '@apollo/client';
+// import { useQuery } from '@apollo/client';
 
-import AnimalList from '../components/AnimalList/index.tsx';
-
-import { QUERY_ANIMALS } from '../utils/queries.ts';
+// import { QUERY_ANIMALS } from '../utils/queries.ts';
 
 const HomePage = () => {
-  const { loading, data } = useQuery(QUERY_ANIMALS);
-  const animal = data?.animals || [];
+  // const { loading, data } = useQuery(QUERY_ANIMALS);
+  // const animal = data?.animals || [];
 
   return (
     <main>
