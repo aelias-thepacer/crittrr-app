@@ -44,7 +44,8 @@
   {
       "commonName": "Arctic Wolf",
       "scientificName": "Canis lupus arctos",
-      "conservationStatus": "Least Concern"
+      "conservationStatus": "Least Concern",
+      "imageLink": "null"
   },
   {
       "commonName": "Artic Fox",
@@ -193,6 +194,7 @@
   {
       "commonName": "Gorilla",
       "scientificName": "Gorilla gorilla (Western Gorilla) and Gorilla beringei (Eastern Gorilla)",
+      "conservationStatus": "Critically Endangered",
       "imageLink": "https://wwfgifts-files.worldwildlife.org/wwfgifts/images/attributes/gorilla.jpg"
   },
   {
