@@ -1,20 +1,5 @@
 import { gql } from '@apollo/client';
 
-export const QUERY_USER = gql`
-  query user($username: String!) {
-    user(username: $username) {
-      _id
-      username
-      email
-      thoughts {
-        _id
-        thoughtText
-        createdAt
-      }
-    }
-  }
-`;
-
 export const QUERY_ANIMALS = gql`
   query getAnimals {
     animals {
@@ -26,46 +11,29 @@ export const QUERY_ANIMALS = gql`
     }
   }
 `;
-
-export const QUERY_THOUGHTS = gql`
-  query getThoughts {
-    thoughts {
+export const QUERY_FAVORITE_ANIMALS = gql`
+  query getFavoriteAnimals($username: String!) {
+    favoriteAnimals(username: $username) {
       _id
-      thoughtText
-      thoughtAuthor
-      createdAt
+      commonName
+      scientificName
+      conservationStatus
+      imageLink
     }
   }
 `;
-
-export const QUERY_SINGLE_THOUGHT = gql`
-  query getSingleThought($thoughtId: ID!) {
-    thought(thoughtId: $thoughtId) {
-      _id
-      thoughtText
-      thoughtAuthor
-      createdAt
-      comments {
-        _id
-        commentText
-        commentAuthor
-        createdAt
-      }
-    }
-  }
-`;
-
 export const QUERY_ME = gql`
-  query me {
+  query me($username: String!) {
     me {
       _id
       username
       email
-      thoughts {
+      favoriteAnimals {
         _id
-        thoughtText
-        thoughtAuthor
-        createdAt
+        commonName
+        scientificName
+        conservationStatus
+        imageLink
       }
     }
   }

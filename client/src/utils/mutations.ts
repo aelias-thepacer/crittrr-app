@@ -24,33 +24,25 @@ export const ADD_USER = gql`
 }
 `;
 
-export const ADD_THOUGHT = gql`
-  mutation AddThought($input: ThoughtInput!) {
-    addThought(input: $input) {
+export const ADD_ANIMAL = gql`
+  mutation AddAnimal($commonName: String!, $scientificName: String, $conservationStatus: String, $imageLink: String) {
+    addAnimal(commonName: $commonName, scientificName: $scientificName, conservationStatus: $conservationStatus, imageLink: $imageLink) {
       _id
-      thoughtText
-      thoughtAuthor
-      createdAt
-      comments {
-        _id
-        commentText
-      }
-    }
+      commonName
+      scientificName
+      conservationStatus
+      imageLink
   }
 `;
 
-export const ADD_COMMENT = gql`
-  mutation addComment($thoughtId: ID!, $commentText: String!) {
-    addComment(thoughtId: $thoughtId, commentText: $commentText) {
+export const REMOVE_ANIMAL = gql`
+  mutation RemoveAnimal($animalId: ID!) {
+    removeAnimal(animalId: $animalId) {
       _id
-      thoughtText
-      thoughtAuthor
-      createdAt
-      comments {
-        _id
-        commentText
-        createdAt
-      }
+      commonName
+      scientificName
+      conservationStatus
+      imageLink
     }
   }
 `;
