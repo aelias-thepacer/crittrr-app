@@ -19,25 +19,21 @@ interface UserArgs {
   username: string;
 }
 
-interface ThoughtArgs {
-  thoughtId: string;
+interface AnimalArgs {
+  animalId: string;
+  commonName: string;
+  scientificName: string;
+  conservationStatus: string;
+  imageLink: string;
 }
 
-interface AddThoughtArgs {
+interface AddAnimalArgs {
   input:{
-    thoughtText: string;
-    thoughtAuthor: string;
+    commonName: string;
+    scientificName: string;
+    conservationStatus: string;
+    imageLink: string;
   }
-}
-
-interface AddCommentArgs {
-  thoughtId: string;
-  commentText: string;
-}
-
-interface RemoveCommentArgs {
-  thoughtId: string;
-  commentId: string;
 }
 
 const resolvers = {
