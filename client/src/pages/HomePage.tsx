@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 
-import animalList from '../components/AnimalList/index.tsx';
+//import animalList from '../components/AnimalList/index.tsx';
 
 import { QUERY_ANIMALS } from '../utils/queries.ts';
 
@@ -27,7 +27,7 @@ const HomePage = () => {
               <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
               <div>
                 <img 
-                src="https://via.placeholder.com/150" 
+                src={animal[0]?.image} 
                 alt="Animal" 
                 style={{ width: '150px', height: '150px', objectFit: 'cover', borderRadius: '10px' }} 
                 />
