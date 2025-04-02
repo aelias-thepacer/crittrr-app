@@ -91,7 +91,11 @@ const resolvers = {
         // add animal to user's favoriteAnimals array
         await User.findOneAndUpdate(
           { _id: context.user._id },
-          { $addToSet: { favoriteAnimals: favedAnimal._id } }
+          { $addToSet: { favoriteAnimals: favedAnimal._id } },
+          {
+            new: true,
+            runValidators: true,
+          }
         );
       }
       throw AuthenticationError;
@@ -100,7 +104,7 @@ const resolvers = {
     removeAnimal: async (_parent: any, { animalId }: AnimalArgs, context: any) => {
       if (context.user) {
         // remove animal from user's favoriteAnimals array
-        const removedAnimal = await User.findOneAndUpdate(
+        return await User.findOneAndUpdate(
           { _id: context.user._id },
           { $pull: { favoriteAnimals: animalId } },
           { new: true }
