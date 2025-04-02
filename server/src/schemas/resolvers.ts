@@ -15,9 +15,9 @@ interface LoginUserArgs {
   password: string;
 }
 
-// interface UserArgs {
-//   username: string;
-// }
+interface UserArgs {
+  username: string;
+}
 
 interface AnimalArgs {
   animalId: string;
@@ -48,6 +48,18 @@ const resolvers = {
       // If the user is not authenticated, throw an AuthenticationError
       throw new AuthenticationError('Not logged in.');
     },
+
+    // Query to get all animals
+    animals: async () => {
+      // Find and return all animals from the database
+      return Animal.find();
+    },
+    // Query to get a specific user's favorite animals
+    favoriteAnimals: async (_parent: any, { username }: UserArgs) => {
+      // Find the user by username and populate their favoriteAnimals
+      const params = username ? { username } : {};
+      return User.find(params).populate('favoriteAnimals');
+    }
   },
   Mutation: {
     addUser: async (_parent: any, { input }: AddUserArgs) => {
