@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 
-import animalList from '../components/AnimalList/index.tsx';
+import AnimalList from '../components/AnimalList/index.tsx';
 
 import { QUERY_ANIMALS } from '../utils/queries.ts';
 
