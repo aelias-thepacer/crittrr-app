@@ -40,5 +40,4 @@ const AnimalList: React.FC<animalListProps> = ({ animals, animalImage }) => {
     </div>
   );
 };
-
 export default AnimalList;
