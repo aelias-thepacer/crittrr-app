@@ -194,6 +194,7 @@
     {
         "commonName": "Gorilla",
         "scientificName": "Gorilla gorilla (Western Gorilla) and Gorilla beringei (Eastern Gorilla)",
+        "conservationStatus": "Endangered",
         "imageLink": "https://wwfgifts-files.worldwildlife.org/wwfgifts/images/attributes/gorilla.jpg"
     },
     {
@@ -367,6 +368,7 @@
     {
         "commonName": "Poison Dart Frog",
         "scientificName": "Dendrobates species",
+        "conservationStatus": "Endangered",
         "imageLink": "https://exo-terra.com/wp-content/uploads/Careguides_Dendrobates_auratus16.jpg"
     },
     {
@@ -517,6 +519,6 @@
         "commonName": "Yellowfin Tuna",
         "scientificName": "Thunnus albacares",
         "conservationStatus": "Near Threatened",
-        "imageLink": "https://www.montereybayaquarium.org/globalassets/mba/images/animals/fishes/yellowfin-tuna-tr17-0363.jpg?width=608&height=404&mode=crop&format=webp&quality=60"
+        "imageLink": "http://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIfGBhO75eOb439u9n0EQwW5dWwoO2YtrzCA&s"
     }
 ]
