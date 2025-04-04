@@ -54,12 +54,13 @@ const resolvers = {
       // Find and return all animals from the database
       return Animal.find();
     },
+    // removed due to superfluousness
     // Query to get a specific user's favorite animals
-    favoriteAnimals: async (_parent: any, { username }: UserArgs) => {
-      // Find the user by username and populate their favoriteAnimals
-      const params = username ? { username } : {};
-      return User.find(params).populate('favoriteAnimals');
-    }
+    // favoriteAnimals: async (_parent: any, { username }: UserArgs) => {
+    //   // Find the user by username and populate their favoriteAnimals
+    //   const params = username ? { username } : {};
+    //   return User.find(params).populate('favoriteAnimals');
+    // }
   },
   Mutation: {
     addUser: async (_parent: any, { input }: AddUserArgs) => {
