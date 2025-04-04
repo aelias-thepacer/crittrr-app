@@ -1,6 +1,8 @@
 import { Navigate, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
+
 import AnimalList from '../components/AnimalList/index.tsx';
+
 import { QUERY_ME } from '../utils/queries';
 import Auth from '../utils/auth';
 
@@ -12,10 +14,9 @@ const Profile = () => {
   });
 
   const user = data?.me || data?.user;
-  
-  // This if condition checks if the user is logged in and if the logged-in user's username matches the userParam.
+
+  // Redirect to "/me" if the logged-in user's username matches the userParam
   if (Auth.loggedIn() && Auth.getProfile().data.username === userParam) {
-    // If the condition is true, it navigates to the "/me" route, which is likely the user's profile page.
     return <Navigate to="/me" />;
   }
 
@@ -30,8 +31,6 @@ const Profile = () => {
         sign up or log in!
       </h4>
     );
-  } else {
-    console.log(user)
   }
 
   return (
@@ -41,23 +40,24 @@ const Profile = () => {
           Viewing {`${user.username}'s`} profile.
         </h2>
         <div className="col-12 col-md-10 mb-5">
+
+
             {(user.favoriteAnimals ?? []).length < 1 ? (
             <h3>{`${user.username}'s`} has no favorite animals yet!</h3>
             ) : (
             <>
               <h3>{`${user.username}'s`} Favorite Animals:</h3>
-              <AnimalList
-              animals={user.favoriteAnimals as Array<{ _id: string; animalType: string; animalName: string; animalImage: string }>}
-              animalImage={user.favoriteAnimals.map((animal: { imageLink: string }) => animal.imageLink)}
-              />
+              //Add code here I couldn't figure it out might've been my end might've been Stuart's end
             </>
             )}
+
         </div>
         {!userParam && (
           <div
             className="col-12 col-md-10 mb-3 p-3"
             style={{ border: '1px dotted #1a1a1a' }}
           >
+            {/* Can add stuff here if needed */}
           </div>
         )}
       </div>
