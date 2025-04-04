@@ -23,6 +23,7 @@ const HomePage = () => {
 
   // State to store user's favorite animals
   const [favorites, setFavorites] = useState<AnimalType[]>([]);
+  console.log('Favorites:', favorites);
 
   // Refs to access the card DOM element and track dragging start position
   const cardRef = useRef<HTMLDivElement>(null);
