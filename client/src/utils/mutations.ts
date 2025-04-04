@@ -33,6 +33,7 @@ export const ADD_ANIMAL = gql`
       conservationStatus
       imageLink
   }
+}
 `;
 
 export const REMOVE_ANIMAL = gql`
