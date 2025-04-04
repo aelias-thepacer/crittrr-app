@@ -2,6 +2,9 @@ import { useState, useRef } from 'react';
 import { useQuery } from '@apollo/client';
 import { QUERY_ANIMALS } from '../utils/queries.ts';
 
+//import { saveAnimal, getSavedAnimals } from '../utils/localStorage.ts';
+// For when Stuart adds the localStorage page
+
 interface AnimalType {
   _id: string;
   commonName: string;
