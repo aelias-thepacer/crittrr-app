@@ -1,7 +1,8 @@
 import { Navigate, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
-// import AnimalList from '../components/AnimalList/index.tsx';
+import AnimalList from '../components/AnimalList/index.tsx';
+
 import { QUERY_ME } from '../utils/queries';
 import Auth from '../utils/auth';
 
@@ -39,9 +40,17 @@ const Profile = () => {
           Viewing {`${user.username}'s`} profile.
         </h2>
         <div className="col-12 col-md-10 mb-5">
-          {/* <AnimalList
-            animals={user.favoriteAnimals as Array<{ _id: string; animalType: string; animalName: string; animalImage: string }>}
-          /> */}
+
+
+            {(user.favoriteAnimals ?? []).length < 1 ? (
+            <h3>{`${user.username}'s`} has no favorite animals yet!</h3>
+            ) : (
+            <>
+              <h3>{`${user.username}'s`} Favorite Animals:</h3>
+              //Add code here I couldn't figure it out might've been my end might've been Stuart's end
+            </>
+            )}
+
         </div>
         {!userParam && (
           <div
