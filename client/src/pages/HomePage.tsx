@@ -80,7 +80,7 @@ const HomePage = () => {
                       >
                         ❌
                       </button>
-                      <button
+                        <button
                         style={{
                           padding: '10px 16px',
                           backgroundColor: '#2ecc71',
@@ -90,9 +90,19 @@ const HomePage = () => {
                           cursor: 'pointer',
                           fontSize: '16px',
                         }}
-                      >
+                        onClick={() => {
+                          const favoriteAnimals = JSON.parse(localStorage.getItem('favoriteAnimals') || '[]');
+                          if (!favoriteAnimals.some((animal: AnimalType) => animal._id === theAnimal._id)) {
+                          favoriteAnimals.push(theAnimal);
+                          localStorage.setItem('favoriteAnimals', JSON.stringify(favoriteAnimals));
+                          alert(`${theAnimal.commonName} added to favorites!`);
+                          } else {
+                          alert(`${theAnimal.commonName} is already in favorites!`);
+                          }
+                        }}
+                        >
                         ❤️
-                      </button>
+                        </button>
                     </div>
                   </div>
 
