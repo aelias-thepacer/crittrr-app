@@ -29,3 +29,7 @@ jobs:
       # Install dependencies
       - name: 🧰 Install Deps
         run: npm install
+
+      # Run build
+      - name: 📦 Build
+        run: npm run build
