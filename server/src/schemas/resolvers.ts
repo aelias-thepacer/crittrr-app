@@ -100,12 +100,12 @@ const resolvers = {
       // Return the token and the user
       return { token, user };
     },
-    addAnimal: async (_parent: any, { input }: AddAnimalArgs, context: any) => {
+    addAnimal: async (_parent: any, input: AddAnimalArgs, context: any) => {
       if (context.user) {
         // add animal to favoriteAnimals array
         const favedAnimal = await Animal.create({ ...input });
         // add animal to user's favoriteAnimals array
-        await User.findOneAndUpdate(
+        return await User.findOneAndUpdate(
           { _id: context.user._id },
           { $addToSet: { favoriteAnimals: favedAnimal._id } },
           {
@@ -114,8 +114,9 @@ const resolvers = {
           }
         );
       }
-      throw AuthenticationError;
-      ('You need to be logged in!');
+      return
+      // else throw AuthenticationError;
+      // ('You need to be logged in!');
     },
     removeAnimal: async (_parent: any, { animalId }: AnimalArgs, context: any) => {
       if (context.user) {

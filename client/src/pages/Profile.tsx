@@ -1,13 +1,10 @@
 import { Navigate, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
-
 //import AnimalList from '../components/AnimalList/index.tsx'; NOT SURE IF THIS IS NEEDED
 
 //import { removeAnimal } from '../utils/local storage.ts';
 // For when Stuart adds the localStorage page
-
-
 
 import { QUERY_ME } from '../utils/queries';
 import Auth from '../utils/auth';
