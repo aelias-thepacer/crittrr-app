@@ -12,7 +12,7 @@ const Profile = () => {
     variables: { username: userParam },
   });
 
-  const user = data?.me || data?.user || {};
+  const user = data?.me || data?.user;
   
   // This if condition checks if the user is logged in and if the logged-in user's username matches the userParam.
   if (Auth.loggedIn() && Auth.getProfile().data.username === userParam) {
@@ -31,6 +31,8 @@ const Profile = () => {
         sign up or log in!
       </h4>
     );
+  } else {
+    console.log(user)
   }
 
   return (
@@ -39,7 +41,6 @@ const Profile = () => {
         <h2 className="col-12 col-md-10 bg-dark text-light p-3 mb-5">
           Viewing {`${user.username}'s`} profile.
         </h2>
-
         <div className="col-12 col-md-10 mb-5">
           <AnimalList
             animals={user.favoriteAnimals as Array<{ _id: string; animalType: string; animalName: string; animalImage: string }>}
