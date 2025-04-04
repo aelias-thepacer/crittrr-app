@@ -15,9 +15,11 @@ interface LoginUserArgs {
   password: string;
 }
 
+/*
 interface UserArgs {
   username: string;
 }
+*/
 
 interface AnimalArgs {
   animalId: string;
