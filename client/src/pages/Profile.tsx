@@ -1,7 +1,7 @@
 import { Navigate, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
-import AnimalList from '../components/AnimalList/index.tsx';
+// import AnimalList from '../components/AnimalList/index.tsx';
 
 import { QUERY_ME } from '../utils/queries';
 import Auth from '../utils/auth';
