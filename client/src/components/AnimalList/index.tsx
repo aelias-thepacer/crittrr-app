@@ -1,11 +1,3 @@
-// Import `<Link>` component from React Router for internal hyperlinks
-// LOOK OVER THIS PAGE I ALMOST GARUNTEE IT IS INCORRET IN 1 WAY OR ANOTHER
-// I JUST EDITED THE EXISTING THOUGHT STUFF THIS IS INCORRECT WE NEED TO EDIT THIS <3
-// ITS JUST PLACEHOLDER TO FIX SOMETHING ELSE
-// SOME OF THIS STUFF CAN BE DELETED I BELIEVE
-
-// import { Link } from 'react-router-dom';
-
 interface animal {
   _id: string;
   animalType: string;

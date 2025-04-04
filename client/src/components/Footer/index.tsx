@@ -33,7 +33,7 @@ const Footer: React.FC = () => {
           >
             ❤️
           </span>{' '}
-          by the Tech Thoughts team.
+          by the Crttrr Team!
         </h4>
       </div>
     </footer>

@@ -43,9 +43,10 @@ const resolvers = {
     // Query to get the authenticated user's information
     // The 'me' query relies on the context to check if the user is authenticated
     me: async (_parent: any, _args: any, context: any) => {
-      // If the user is authenticated, find and return the user's information along with their thoughts
+      // If the user is authenticated, find and return the user's information along with their favorite animals
       if (context.user) {
-        return User.findOne({ _id: context.user._id }).populate('favoriteAnimals');
+        const userData = await User.findOne({ _id: context.user._id });
+        return userData;
       }
       // If the user is not authenticated, throw an AuthenticationError
       throw new AuthenticationError('Not logged in.');
