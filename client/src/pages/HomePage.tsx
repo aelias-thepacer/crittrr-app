@@ -1,7 +1,9 @@
 import { useState, useRef } from 'react';
 import { useQuery } from '@apollo/client';
 import { QUERY_ANIMALS } from '../utils/queries.ts';
+
 import { AnimalType } from '../interfaces/AnimalType.tsx';
+
 
 const HomePage = () => {
   // Fetch animal data from query
@@ -13,6 +15,7 @@ const HomePage = () => {
 
   // State to store user's favorite animals
   const [favorites, setFavorites] = useState<AnimalType[]>([]);
+  console.log('Favorites:', favorites);
 
   // Refs to access the card DOM element and track dragging start position
   const cardRef = useRef<HTMLDivElement>(null);
