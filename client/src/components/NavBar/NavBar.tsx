@@ -21,8 +21,18 @@ const NavBar = () => {
         <div style={{ textAlign: 'center', flex: 1 }}>
           {/* Only render the "Hello" message if not on the Favorites page */}
           {location.pathname !== '/FavoritesPage' && Auth.loggedIn() && (
-            <Link className="text-light" to="/">
-              <h1 className="m-0">Hello {Auth.getProfile().data.username}!</h1>
+            <Link
+              className="text-light"
+              to="/"
+              style={{
+              textDecorationColor: 'black',
+              textShadow: '3px 2px 2px rgba(255, 255, 255, 0.5)',
+              fontWeight: 'bold',
+              }}
+            >
+                <h1 className="m-0 text-default" style={{ display: 'inline' }}>
+                Hello {Auth.getProfile().data.username}!
+                </h1>
             </Link>
           )}
         </div>

@@ -150,7 +150,12 @@ const HomePage = () => {
         {/* Header section */}
         <div
           className="col-12 col-md-10 mb-3 p-3"
-          style={{ border: '1px solid #1a1a1a' }}
+          style={{
+            border: '1px solid rgb(0, 0, 0)',
+            background: 'linear-gradient(to right, #4facfe, #00f2fe)', // Blue gradient background
+            borderRadius: '8px', // Optional: Add rounded corners
+            color: '#000', // Optional: Ensure text is readable on gradient
+          }}
         >
           <h1>Welcome to Crittrr!</h1>
           <h2>Swipe right to ❤️ or left to ❌</h2>
@@ -158,37 +163,39 @@ const HomePage = () => {
 
         {/* Show animal card if available, otherwise show a message */}
         {currentAnimal ? (
-          <div
+            <div
             ref={cardRef}
             onMouseDown={handleMouseDown}
             onTouchStart={handleMouseDown}
             style={{
               width: '260px',
               margin: '0 auto',
-              background: '#fff',
+              background: 'linear-gradient(to bottom, #4facfe, #00f2fe)', // Gradient blue background
+              border: '1px solid #000', // Optional: Border for better visibility
               borderRadius: '16px',
               padding: '16px',
               boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
               transition: 'transform 0.3s ease',
               cursor: 'grab',
+              color: '#000', // Ensure text is readable on gradient
             }}
-          >
+            >
             {/* Display animal image and info */}
             <img
               src={currentAnimal.imageLink}
               alt={currentAnimal.commonName}
               style={{
-                width: '100%',
-                height: '180px',
-                objectFit: 'cover',
-                borderRadius: '12px',
-                marginBottom: '12px',
+              width: '100%',
+              height: '180px',
+              objectFit: 'cover',
+              borderRadius: '12px',
+              marginBottom: '12px',
               }}
             />
             <h3>{currentAnimal.commonName}</h3>
             <p><em>{currentAnimal.scientificName}</em></p>
             <p>{currentAnimal.conservationStatus}</p>
-          </div>
+            </div>
         ) : (
           <p>No more animals to show.</p>
         )}
