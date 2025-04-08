@@ -19,6 +19,7 @@
  */
 body {
   margin: 0;
+  background: linear-gradient(90deg, #a0c4d6, #6b8ca8);
 }
 
 /**
@@ -27,6 +28,7 @@ body {
 main {
   display: block;
 }
+
 
 /**
  * Correct the font size and margin on `h1` elements within `section` and
@@ -920,7 +922,7 @@ a:hover {
 
 /* BACKGROUND UTILS */
 .bg-primary {
-  background-color: #2d3e50 !important;
+  background: linear-gradient(90deg, #007a7a, #20b2aa) !important;
 }
 
 .bg-info {
@@ -940,7 +942,7 @@ a:hover {
 }
 
 .bg-white {
-  background-color: #ffffff !important;
+  background-color: #c70202 !important;
 }
 
 .bg-black {
@@ -1030,32 +1032,32 @@ a:hover {
 }
 
 .btn.btn-info {
-  background-color: #1bbc9b;
+  background: linear-gradient(90deg, #001f3f, #003366);
   color: #ffffff;
 }
 
 .btn.btn-info:hover {
-  background-color: #31e1bd;
+  background-color: #25c548;
 }
 
 .btn.btn-light {
-  background-color: #d9e9e8;
+  background-color: #00ecdd;
   color: #1a1a1a;
 }
 
 .btn.btn-light:hover {
-  background-color: #84b8b4;
+  background-color: #00c7bd;
 }
 
 .btn.btn-dark {
-  background-color: #1a1a1a;
+  background-color: #000a63;
   color: #d9e9e8;
 }
 
 .btn.btn-dark:hover {
-  background-color: #5f5f5f;
+  background-color: #0015ce;
 }
-
+  
 .btn.btn-white {
   background-color: #ffffff;
   color: #1a1a1a;
