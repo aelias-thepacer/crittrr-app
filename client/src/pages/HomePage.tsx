@@ -2,16 +2,8 @@ import { useState, useRef } from 'react';
 import { useQuery } from '@apollo/client';
 import { QUERY_ANIMALS } from '../utils/queries.ts';
 
-//import { saveAnimal, getSavedAnimals } from '../utils/localStorage.ts';
-// For when Stuart adds the localStorage page
+import { AnimalType } from '../interfaces/AnimalType.tsx';
 
-interface AnimalType {
-  _id: string;
-  commonName: string;
-  scientificName: string;
-  conservationStatus: string;
-  imageLink: string;
-}
 
 const HomePage = () => {
   // Fetch animal data from query
@@ -93,7 +85,7 @@ const HomePage = () => {
 
       if (!alreadyFavorited) {
         favoriteAnimals.push(currentAnimal);
-        localStorage.setItem('favoriteAnimals', JSON.stringify(favoriteAnimals));
+        localStorage.setItem('favoriteAnimals', JSON.stringify([...favoriteAnimals, currentAnimal]));
         alert(`${currentAnimal.commonName} added to favorites!`);
       } else {
         alert(`${currentAnimal.commonName} is already in favorites!`);

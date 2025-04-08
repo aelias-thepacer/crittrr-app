@@ -1,7 +1,8 @@
 import { Navigate, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
-//import AnimalList from '../components/AnimalList/index.tsx'; NOT SURE IF THIS IS NEEDED
+import Favorites from '../components/Favorites/Favorites';
+
 
 //import { removeAnimal } from '../utils/local storage.ts';
 // For when Stuart adds the localStorage page
@@ -45,14 +46,8 @@ const Profile = () => {
         <div className="col-12 col-md-10 mb-5">
 
 
-          {(user.favoriteAnimals ?? []).length < 1 ? (
-            <h3>{`${user.username}'s`} has no favorite animals yet!</h3>
-          ) : (
-            <>
-              <h3>{`${user.username}'s`} Favorite Animals:</h3>
-              Add code here I couldn't figure it out might've been my end might've been Stuart's end
-            </>
-          )}
+          <Favorites />
+
 
         </div>
         {!userParam && (
