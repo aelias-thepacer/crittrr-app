@@ -29,14 +29,7 @@ interface AnimalArgs {
   imageLink: string;
 }
 
-interface AddAnimalArgs {
-  input:{
-    commonName: string;
-    scientificName: string;
-    conservationStatus: string;
-    imageLink: string;
-  }
-}
+
 
 const resolvers = {
   Query: {
