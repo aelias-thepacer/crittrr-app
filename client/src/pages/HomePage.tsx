@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react';
 import { useQuery } from '@apollo/client';
-import { QUERY_ANIMALS } from '../utils/queries.ts';
+import { QUERY_ANIMALS, QUERY_ME } from '../utils/queries.ts';
+import { useMutation } from '@apollo/client';
+import { ADD_ANIMAL } from '../utils/mutations.ts';
 
 import { AnimalType } from '../interfaces/AnimalType.tsx';
 
@@ -14,8 +16,20 @@ const HomePage = () => {
   const [index, setIndex] = useState(0);
 
   // State to store user's favorite animals
-  const [favorites, setFavorites] = useState<AnimalType[]>([]);
-  console.log('Favorites:', favorites);
+  const [favorites, setFavorites] = useState<AnimalType[]>(useQuery(QUERY_ME).data?.me.favoriteAnimals || []);
+
+  const [addAnimal] = useMutation(ADD_ANIMAL);
+  
+  const handleAddAnimal = async (animal: AnimalType) => {
+    try {
+      const { data } = await addAnimal({
+        variables: { ...animal },
+      });
+      console.log('Animal added:', data.addAnimal);
+    } catch (error) {
+      console.error('Error adding animal:', error);
+    }
+  };
 
   // Refs to access the card DOM element and track dragging start position
   const cardRef = useRef<HTMLDivElement>(null);
@@ -78,14 +92,20 @@ const HomePage = () => {
 
     // If swiped right, add animal to favorites and store in localStorage
     if (direction === 'right') {
+
+      
       setFavorites((prev) => [...prev, currentAnimal]);
 
-      const favoriteAnimals = JSON.parse(localStorage.getItem('favoriteAnimals') || '[]');
-      const alreadyFavorited = favoriteAnimals.some((a: AnimalType) => a._id === currentAnimal._id);
+      // Check if the animal is already in favorites
+      const alreadyFavorited = favorites.some(
+        (animal) => animal._id === currentAnimal._id
+      );
 
       if (!alreadyFavorited) {
         // favoriteAnimals.push(currentAnimal);
-        localStorage.setItem('favoriteAnimals', JSON.stringify([...favoriteAnimals, currentAnimal]));
+       handleAddAnimal(currentAnimal);
+       // add to favorites
+        setFavorites((prev) => [...prev, currentAnimal]);
         alert(`${currentAnimal.commonName} added to favorites!`);
       } else {
         alert(`${currentAnimal.commonName} is already in favorites!`);
