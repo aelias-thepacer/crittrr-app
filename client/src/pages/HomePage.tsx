@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react';
 import { useQuery } from '@apollo/client';
 import { QUERY_ANIMALS } from '../utils/queries.ts';
-
 import { AnimalType } from '../interfaces/AnimalType.tsx';
 
 
@@ -10,8 +9,8 @@ const HomePage = () => {
   const { loading, data } = useQuery(QUERY_ANIMALS);
   const animals: AnimalType[] = data?.animals || [];
 
-  // Track state of the current animal and its index 
-  const [index, setIndex] = useState(0);
+  // State to store the current animal
+  const [currentAnimal, setCurrentAnimal] = useState<AnimalType | null>(null);
 
   // State to store user's favorite animals
   const [favorites, setFavorites] = useState<AnimalType[]>([]);
@@ -72,48 +71,59 @@ const HomePage = () => {
     window.addEventListener('touchend', handleUp);
   };
 
+    // Function to randomize the current animal
+    const randomizeAnimal = () => {
+      if (animals.length > 0) {
+      const randomIndex = Math.floor(Math.random() * animals.length);
+      setCurrentAnimal(animals[randomIndex]);
+      } else {
+      setCurrentAnimal(null);
+      }
+    };
+
   // Handle swipe left or right
   const handleSwipe = (direction: 'left' | 'right') => {
-    const currentAnimal = animals[index];
+    if (currentAnimal) {
+      // If swiped right, add animal to favorites and store in localStorage
+      if (direction === 'right') {
+        setFavorites((prev) => [...prev, currentAnimal]);
 
-    // If swiped right, add animal to favorites and store in localStorage
-    if (direction === 'right') {
-      setFavorites((prev) => [...prev, currentAnimal]);
+        const favoriteAnimals = JSON.parse(localStorage.getItem('favoriteAnimals') || '[]');
+        const alreadyFavorited = favoriteAnimals.some((a: AnimalType) => a._id === currentAnimal._id);
 
-      const favoriteAnimals = JSON.parse(localStorage.getItem('favoriteAnimals') || '[]');
-      const alreadyFavorited = favoriteAnimals.some((a: AnimalType) => a._id === currentAnimal._id);
-
-      if (!alreadyFavorited) {
-        // favoriteAnimals.push(currentAnimal);
-        localStorage.setItem('favoriteAnimals', JSON.stringify([...favoriteAnimals, currentAnimal]));
-        alert(`${currentAnimal.commonName} added to favorites!`);
-      } else {
-        alert(`${currentAnimal.commonName} is already in favorites!`);
+        if (!alreadyFavorited) {
+          // favoriteAnimals.push(currentAnimal);
+          localStorage.setItem('favoriteAnimals', JSON.stringify([...favoriteAnimals, currentAnimal]));
+          alert(`${currentAnimal.commonName} added to favorites!`);
+        } else {
+          alert(`${currentAnimal.commonName} is already in favorites!`);
+        }
       }
-    }
 
-    // Animate the card flying off screen
-    if (cardRef.current) {
-      cardRef.current.style.transition = 'transform 0.3s ease';
-      cardRef.current.style.transform = `translateX(${direction === 'right' ? '1000px' : '-1000px'}) rotate(${direction === 'right' ? 45 : -45}deg)`;
-    }
-
-    // Reset card, then go to next animal
-    setTimeout(() => {
+      // Animate the card flying off screen
       if (cardRef.current) {
-        cardRef.current.style.transition = '';
-        cardRef.current.style.transform = '';
+        cardRef.current.style.transition = 'transform 0.3s ease';
+        cardRef.current.style.transform = `translateX(${direction === 'right' ? '1000px' : '-1000px'}) rotate(${direction === 'right' ? 45 : -45}deg)`;
       }
-      setIndex((prev) => prev + 1);
-    }, 300);
+
+      // Reset card, then go to next animal
+      setTimeout(() => {
+        if (cardRef.current) {
+          cardRef.current.style.transition = '';
+          cardRef.current.style.transform = '';
+        }
+        randomizeAnimal();
+      }, 300);
+    }
   };
 
   // Show loading state while data is being fetched
   if (loading) return <div>Loading...</div>;
 
   // Get the currently displayed animal
-  const currentAnimal = animals[index];
-
+  if (!currentAnimal && animals.length > 0) {
+    randomizeAnimal();
+  }
   // Main 
   return (
     <main style={{ textAlign: 'center', padding: '20px' }}>
