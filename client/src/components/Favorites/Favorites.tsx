@@ -20,7 +20,6 @@ function Favorites() {
 
   return (
     <div>
-      <h2>Favorites: {favorites.length}</h2>
       <div className="scroll-container">
         {favorites.map((animal) => (
           <div className="card" key={animal._id}>
@@ -45,11 +44,11 @@ function Favorites() {
         .card {
           flex: 0 0 auto;
           width: 200px;
-          border: 1px solid #ccc;
+          border: 1px solid #000;
           border-radius: 12px;
           padding: 1rem;
-          background: #fff;
-          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+          background: linear-gradient(to bottom, #4facfe, #00f2fe); /* Gradient blue background */
+          box-shadow: 0 6px 14px rgba(0, 25, 100, 0.75);
           scroll-snap-align: start;
         }
 
@@ -73,15 +72,15 @@ function Favorites() {
         .card button {
           margin-top: 0.5rem;
           padding: 0.5rem 1rem;
-          background-color: #ff4d4d;
+          background-color:rgb(253, 38, 38);
           color: white;
-          border: none;
+          border: solid 1px #000;
           border-radius: 8px;
           cursor: pointer;
         }
 
         .card button:hover {
-          background-color: #ff1a1a;
+          background-color:rgb(185, 18, 18);
         }
 
         /* Optional: Hide scrollbar on Webkit browsers */
@@ -93,6 +92,26 @@ function Favorites() {
           scrollbar-width: none; /* Firefox */
         }
       `}</style>
+
+      <h2
+        style={{
+          display: 'inline-block',
+          margin: '1rem auto',
+          color: '#000',
+          fontSize: '1.5rem',
+          border: '1px solid black',
+          background: 'linear-gradient(to right, #4facfe, #00f2fe)',
+          padding: '0.5rem',
+          borderRadius: '8px',
+          textAlign: 'center',
+          width: 'fit-content',
+          position: 'relative',
+          left: '50%',
+          transform: 'translateX(-50%)',
+        }}
+      >
+        Favorites: {favorites.length}
+      </h2>
     </div>
   );
 }

@@ -897,7 +897,7 @@ a:hover {
 }
 
 .text-default {
-  color: #aeaeae !important;
+  color: #000000 !important;
 }
 
 .text-light {
@@ -938,7 +938,7 @@ a:hover {
 }
 
 .bg-dark {
-  background-color: #1a1a1a !important;
+  background: linear-gradient(90deg, #071597, #1a357e) !important;
 }
 
 .bg-white {
@@ -1032,8 +1032,11 @@ a:hover {
 }
 
 .btn.btn-info {
-  background: linear-gradient(90deg, #001f3f, #003366);
-  color: #ffffff;
+  background: linear-gradient(90deg, #0263e2, #00bdbd);
+  color: #000000;
+  border-radius: 1px;
+  border-color: #000;
+  border-radius: 5px;
 }
 
 .btn.btn-info:hover {
@@ -1041,12 +1044,13 @@ a:hover {
 }
 
 .btn.btn-light {
-  background-color: #00ecdd;
-  color: #1a1a1a;
+  background-color: #04c0c0;
+  border: solid #000;
+  border-width: 1px;
 }
 
 .btn.btn-light:hover {
-  background-color: #00c7bd;
+  background-color: #f73434;
 }
 
 .btn.btn-dark {
