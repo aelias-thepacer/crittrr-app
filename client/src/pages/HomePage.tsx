@@ -84,7 +84,7 @@ const HomePage = () => {
       const alreadyFavorited = favoriteAnimals.some((a: AnimalType) => a._id === currentAnimal._id);
 
       if (!alreadyFavorited) {
-        favoriteAnimals.push(currentAnimal);
+        // favoriteAnimals.push(currentAnimal);
         localStorage.setItem('favoriteAnimals', JSON.stringify([...favoriteAnimals, currentAnimal]));
         alert(`${currentAnimal.commonName} added to favorites!`);
       } else {
