@@ -4,10 +4,19 @@ import { AnimalType } from '../../interfaces/AnimalType';
 function Favorites() {
   const [favorites, setFavorites] = useState<AnimalType[]>([]);
 
+  // Function to remove an animal from favorites
+  const removeFavorite = (animalId: string) => {
+    setFavorites((prevFavorites) =>
+      prevFavorites.filter((animal) => animal._id !== animalId)
+    );
+  };
+
+
   useEffect(() => {
     const favoriteAnimals = JSON.parse(localStorage.getItem('favoriteAnimals') || '[]');
     setFavorites(favoriteAnimals);
   }, []);
+
 
   return (
     <div>
@@ -19,6 +28,7 @@ function Favorites() {
             <h3>{animal.commonName}</h3>
             <p><em>{animal.scientificName}</em></p>
             <p>Status: {animal.conservationStatus}</p>
+            <button onClick={() => removeFavorite(animal._id)}>Remove</button>
           </div>
         ))}
       </div>
@@ -58,6 +68,20 @@ function Favorites() {
         .card p {
           margin: 0.2rem 0;
           font-size: 0.9rem;
+        }
+
+        .card button {
+          margin-top: 0.5rem;
+          padding: 0.5rem 1rem;
+          background-color: #ff4d4d;
+          color: white;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+        }
+
+        .card button:hover {
+          background-color: #ff1a1a;
         }
 
         /* Optional: Hide scrollbar on Webkit browsers */
