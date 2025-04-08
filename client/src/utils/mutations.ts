@@ -43,8 +43,8 @@ mutation AddUser($input: UserInput!) {
 `;
 
 export const ADD_ANIMAL = gql`
-mutation AddAnimal($commonName: String!, $scientificName: String, $conservationStatus: String, $imageLink: String) {
-  addAnimal(commonName: $commonName, scientificName: $scientificName, conservationStatus: $conservationStatus, imageLink: $imageLink) {
+mutation AddAnimal($animalId: ID!) {
+  addAnimal(animalId: $animalId) {
     _id
     commonName
     conservationStatus

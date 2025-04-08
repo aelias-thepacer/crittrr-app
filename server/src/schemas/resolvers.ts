@@ -100,11 +100,14 @@ const resolvers = {
       // Return the token and the user
       return { token, user };
     },
-    addAnimal: async (_parent: any, input: AddAnimalArgs, context: any) => {
+    addAnimal: async (_parent: any, { animalId }: AnimalArgs, context: any) => {
       if (context.user) {
         // add animal to favoriteAnimals array
-        const favedAnimal = await Animal.create({ ...input });
+        const favedAnimal = await Animal.findById(animalId);
         // add animal to user's favoriteAnimals array
+        if (!favedAnimal) {
+          return;
+        }
         return await User.findOneAndUpdate(
           { _id: context.user._id },
           { $addToSet: { favoriteAnimals: favedAnimal._id } },
