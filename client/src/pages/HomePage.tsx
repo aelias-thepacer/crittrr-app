@@ -19,7 +19,7 @@ const HomePage = () => {
   const [favorites, setFavorites] = useState<AnimalType[]>(useQuery(QUERY_ME).data?.me.favoriteAnimals || []);
 
   const [addAnimal] = useMutation(ADD_ANIMAL);
-  
+
   const handleAddAnimal = async (animal: AnimalType) => {
     try {
       const { data } = await addAnimal({
@@ -86,15 +86,15 @@ const HomePage = () => {
     window.addEventListener('touchend', handleUp);
   };
 
-    // Function to randomize the current animal
-    const randomizeAnimal = () => {
-      if (animals.length > 0) {
+  // Function to randomize the current animal
+  const randomizeAnimal = () => {
+    if (animals.length > 0) {
       const randomIndex = Math.floor(Math.random() * animals.length);
       setCurrentAnimal(animals[randomIndex]);
-      } else {
+    } else {
       setCurrentAnimal(null);
-      }
-    };
+    }
+  };
 
   // Handle swipe left or right
   const handleSwipe = (direction: 'left' | 'right') => {
@@ -103,26 +103,23 @@ const HomePage = () => {
       if (direction === 'right') {
         setFavorites((prev) => [...prev, currentAnimal]);
 
-      // Check if the animal is already in favorites
-      const alreadyFavorited = favorites.some(
-        (animal) => animal._id === currentAnimal._id
-      );
+        // Check if the animal is already in favorites
+        const alreadyFavorited = favorites.some(
+          (animal) => animal._id === currentAnimal._id
+        );
 
-      if (!alreadyFavorited) {
-        // favoriteAnimals.push(currentAnimal);
-       handleAddAnimal(currentAnimal);
-       // add to favorites
-        setFavorites((prev) => [...prev, currentAnimal]);
-        alert(`${currentAnimal.commonName} added to favorites!`);
-      } else {
-        alert(`${currentAnimal.commonName} is already in favorites!`);
+        if (!alreadyFavorited) {
+          // favoriteAnimals.push(currentAnimal);
+          handleAddAnimal(currentAnimal);
+          // add to favorites
+          setFavorites((prev) => [...prev, currentAnimal]);
+        }
       }
-    }
 
       // Animate the card flying off screen
       if (cardRef.current) {
         cardRef.current.style.transition = 'transform 0.3s ease';
-        cardRef.current.style.transform = `translateX(${direction === 'right' ? '1000px' : '-1000px'}) rotate(${direction === 'right' ? 45 : -45}deg)`;
+        cardRef.current.style.transform = `translateX(${direction === 'right' ? '40000px' : '-40000px'}) rotate(${direction === 'right' ? 45 : -45}deg)`;
       }
 
       // Reset card, then go to next animal
@@ -163,7 +160,7 @@ const HomePage = () => {
 
         {/* Show animal card if available, otherwise show a message */}
         {currentAnimal ? (
-            <div
+          <div
             ref={cardRef}
             onMouseDown={handleMouseDown}
             onTouchStart={handleMouseDown}
@@ -179,23 +176,24 @@ const HomePage = () => {
               cursor: 'grab',
               color: '#000', // Ensure text is readable on gradient
             }}
-            >
+          >
             {/* Display animal image and info */}
             <img
               src={currentAnimal.imageLink}
               alt={currentAnimal.commonName}
               style={{
-              width: '100%',
-              height: '180px',
-              objectFit: 'cover',
-              borderRadius: '12px',
-              marginBottom: '12px',
+                width: '100%',
+                height: '180px',
+                objectFit: 'cover',
+                borderRadius: '12px',
+                marginBottom: '12px',
+                pointerEvents: 'none', // Prevent image from capturing mouse events
               }}
             />
             <h3>{currentAnimal.commonName}</h3>
             <p><em>{currentAnimal.scientificName}</em></p>
             <p>{currentAnimal.conservationStatus}</p>
-            </div>
+          </div>
         ) : (
           <p>No more animals to show.</p>
         )}
