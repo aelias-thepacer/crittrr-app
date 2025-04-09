@@ -38,7 +38,7 @@ const resolvers = {
     me: async (_parent: any, _args: any, context: any) => {
       // If the user is authenticated, find and return the user's information along with their favorite animals
       if (context.user) {
-        const userData = await User.findOne({ _id: context.user._id });
+        const userData = await User.findOne({ _id: context.user._id }).populate('favoriteAnimals');
         return userData;
       }
       // If the user is not authenticated, throw an AuthenticationError
@@ -101,9 +101,7 @@ const resolvers = {
       return { token, user };
     },
     addAnimal: async (_parent: any, {animalInput}: AnimalArgs, context: any) => {
-      console.log(animalInput);
       const id = animalInput._id;
-      console.log(id);
       if (context.user) {
         // add animal to favoriteAnimals array
         const favedAnimal = await Animal.findById(id);
@@ -121,6 +119,7 @@ const resolvers = {
             runValidators: true,
           }
         );
+        console.log(updatedUser);
         return updatedUser;
 
       }
@@ -128,14 +127,18 @@ const resolvers = {
       // else throw AuthenticationError;
       // ('You need to be logged in!');
     },
-    removeAnimal: async (_parent: any, args: AnimalArgs, context: any) => {
+    removeAnimal: async (_parent: any, {animalInput}: AnimalArgs, context: any) => {
+      const id = animalInput._id;
+      console.log(id);
       if (context.user) {
         // remove animal from user's favoriteAnimals array
-        return await User.findOneAndUpdate(
+
+        const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
-          { $pull: { favoriteAnimals: args.animalInput._id } },
+          { $pull: { favoriteAnimals: id } },
           { new: true }
         );
+        return updatedUser;
       }
       throw AuthenticationError;
     },

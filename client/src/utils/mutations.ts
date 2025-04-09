@@ -45,14 +45,14 @@ mutation addUser($input: UserInput!) {
 export const ADD_ANIMAL = gql`
 mutation addAnimal($animalData: animalInput) {
   addAnimal(animalInput: $animalData) {
-  email
-  
-}}
+    email
+  }
+}
 `;
 
 export const REMOVE_ANIMAL = gql`
-mutation removeAnimal($input: animalInput) {
-  removeAnimal(input: $input) {
+mutation removeAnimal($animalData: animalInput) {
+  removeAnimal(animalInput: $animalData) {
     email
   }
 }
