@@ -6,7 +6,6 @@ import { ADD_ANIMAL } from '../utils/mutations.ts';
 
 import { AnimalType } from '../interfaces/AnimalType.tsx';
 
-
 const HomePage = () => {
   // Fetch animal data from query
   const { loading, data } = useQuery(QUERY_ANIMALS);
@@ -20,12 +19,22 @@ const HomePage = () => {
 
   const [addAnimal] = useMutation(ADD_ANIMAL);
 
+  // State for showing the success message
+  const [showMessage, setShowMessage] = useState(false);
+
   const handleAddAnimal = async (animal: AnimalType) => {
     try {
       const { data } = await addAnimal({
         variables: { ...animal },
       });
       console.log('Animal added:', data.addAnimal);
+      // Show the success message when the animal is added
+      setShowMessage(true);
+
+      // Hide the message after 3 seconds
+      setTimeout(() => {
+        setShowMessage(false);
+      }, 3000);
     } catch (error) {
       console.error('Error adding animal:', error);
     }
@@ -37,6 +46,9 @@ const HomePage = () => {
 
   // Handle drag/touch start
   const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
+    // Disable text selection while dragging
+    document.body.style.userSelect = 'none';
+
     // Get initial X position from mouse or touch
     const startX = 'touches' in e ? e.touches[0].clientX : e.clientX;
     dragStartX.current = startX;
@@ -71,6 +83,9 @@ const HomePage = () => {
           cardRef.current.style.transform = 'translateX(0px) rotate(0deg)';
         }
       }
+
+      // Enable text selection again after drag ends
+      document.body.style.userSelect = '';
 
       // Remove event listeners after drag ends
       window.removeEventListener('mousemove', handleMove);
@@ -109,9 +124,8 @@ const HomePage = () => {
         );
 
         if (!alreadyFavorited) {
-          // favoriteAnimals.push(currentAnimal);
           handleAddAnimal(currentAnimal);
-          // add to favorites
+          // Add to favorites
           setFavorites((prev) => [...prev, currentAnimal]);
         }
       }
@@ -140,7 +154,7 @@ const HomePage = () => {
   if (!currentAnimal && animals.length > 0) {
     randomizeAnimal();
   }
-  // Main 
+
   return (
     <main style={{ textAlign: 'center', padding: '20px' }}>
       <div className="flex-row justify-center">
@@ -198,8 +212,29 @@ const HomePage = () => {
           <p>No more animals to show.</p>
         )}
       </div>
+
+      {/* Show "Animal added" message */}
+      {showMessage && (
+        <div style={messageStyle}>
+          Animal added to favorites!
+        </div>
+      )}
     </main>
   );
+};
+
+// Add some basic styles for the message
+const messageStyle: React.CSSProperties = {
+  position: 'fixed',
+  bottom: '20px',
+  left: '50%',
+  transform: 'translateX(-50%)',
+  padding: '10px 20px',
+  backgroundColor: 'linear-gradient(to bottom, #4facfe, #00f2fe)',
+  color: 'white',
+  borderRadius: '5px',
+  zIndex: 1000,
+  transition: 'opacity 0.5s ease-in-out',
 };
 
 export default HomePage;
