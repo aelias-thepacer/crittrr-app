@@ -7,6 +7,7 @@ interface IUser extends Document {
   email: string;
   password: string;
   isCorrectPassword(password: string): Promise<boolean>;
+  favoriteAnimals: Schema.Types.ObjectId[];
 }
 
 // Define the schema for the User document
@@ -29,6 +30,12 @@ const userSchema = new Schema<IUser>(
       required: true,
       minlength: 5,
     },
+    favoriteAnimals: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Animal',
+      },
+    ],
   },
   {
     timestamps: true,

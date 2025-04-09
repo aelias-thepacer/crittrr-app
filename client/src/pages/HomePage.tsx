@@ -16,17 +16,25 @@ const HomePage = () => {
   const [currentAnimal, setCurrentAnimal] = useState<AnimalType | null>(null);
 
   // State to store user's favorite animals
-  const [favorites, setFavorites] = useState<AnimalType[]>(useQuery(QUERY_ME).data?.me.favoriteAnimals || []);
+  const [favorites, setFavorites] = useState<AnimalType[]>(useQuery(QUERY_ME).data?.me.favoriteAnimals || [])
 
   const [addAnimal] = useMutation(ADD_ANIMAL);
 
   const handleAddAnimal = async (animal: AnimalType) => {
     try {
-      const { data } = await addAnimal({
-        variables: { ...animal },
+      console.log('Adding animal:', animal);
+      const animalInput = {
+        _id: animal._id,
+        commonName: animal.commonName,
+        scientificName: animal.scientificName
+      };
+      const {data} = await addAnimal({
+        variables: {animalData: animalInput},
       });
       console.log('Animal added:', data.addAnimal);
     } catch (error) {
+      console.log("Data:", data);
+      console.log("Animal:", animal);
       console.error('Error adding animal:', error);
     }
   };

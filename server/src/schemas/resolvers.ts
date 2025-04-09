@@ -22,11 +22,11 @@ interface UserArgs {
 */
 
 interface AnimalArgs {
-  animalId: string;
-  commonName: string;
-  scientificName: string;
-  conservationStatus: string;
-  imageLink: string;
+  animalInput: {
+    _id: string;
+    commonName: string;
+    scientificName: string;
+  }
 }
 
 
@@ -67,6 +67,9 @@ const resolvers = {
       const token = signToken(user.username, user.email, user._id);
     
       // Return the token and the user
+      console.log(user);
+      console.log(token);
+      console.log("adduser success");
       return { token, user };
     },
     
@@ -89,37 +92,48 @@ const resolvers = {
     
       // Sign a token with the user's information
       const token = signToken(user.username, user.email, user._id);
+
+      console.log(user);
+      console.log(token);
+      console.log("login success");
     
       // Return the token and the user
       return { token, user };
     },
-    addAnimal: async (_parent: any, { animalId }: AnimalArgs, context: any) => {
+    addAnimal: async (_parent: any, {animalInput}: AnimalArgs, context: any) => {
+      console.log(animalInput);
+      const id = animalInput._id;
+      console.log(id);
       if (context.user) {
         // add animal to favoriteAnimals array
-        const favedAnimal = await Animal.findById(animalId);
-        // add animal to user's favoriteAnimals array
+        const favedAnimal = await Animal.findById(id);
+        console.log(favedAnimal);
+        
         if (!favedAnimal) {
           return;
         }
-        return await User.findOneAndUpdate(
+
+        const updatedUser = await User.findOneAndUpdate(
           { _id: context.user._id },
-          { $addToSet: { favoriteAnimals: favedAnimal._id } },
+          { $push: { favoriteAnimals: favedAnimal } },
           {
             new: true,
             runValidators: true,
           }
         );
+        return updatedUser;
+
       }
       return
       // else throw AuthenticationError;
       // ('You need to be logged in!');
     },
-    removeAnimal: async (_parent: any, { animalId }: AnimalArgs, context: any) => {
+    removeAnimal: async (_parent: any, args: AnimalArgs, context: any) => {
       if (context.user) {
         // remove animal from user's favoriteAnimals array
         return await User.findOneAndUpdate(
           { _id: context.user._id },
-          { $pull: { favoriteAnimals: animalId } },
+          { $pull: { favoriteAnimals: args.animalInput._id } },
           { new: true }
         );
       }

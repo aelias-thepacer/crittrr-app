@@ -15,6 +15,12 @@ const typeDefs = `
     imageLink: String!
   }
 
+  input animalInput {
+    _id: ID
+    commonName: String!
+    scientificName: String!
+  }
+
   input UserInput {
     username: String!
     email: String!
@@ -35,9 +41,9 @@ const typeDefs = `
     addUser(input: UserInput!): Auth
     login(email: String!, password: String!): Auth
 
-    addAnimal(commonName: String!, scientificName: String, conservationStatus: String, imageLink: String): User
+    addAnimal(animalInput: animalInput): User
 
-    removeAnimal(animalId: ID!): User
+    removeAnimal(input: animalInput): User
   }
 `;
 
