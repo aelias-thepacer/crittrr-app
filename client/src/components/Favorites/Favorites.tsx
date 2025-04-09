@@ -1,7 +1,8 @@
 import {  useState, useRef } from 'react';
 import { AnimalType } from '../../interfaces/AnimalType';
 import { QUERY_ME } from '../../utils/queries.ts';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
+import { REMOVE_ANIMAL } from '../../utils/mutations.ts';
 
 
 function Favorites() {
@@ -11,15 +12,31 @@ function Favorites() {
   const isDraggingRef = useRef(false);
   const startXRef = useRef(0);
   const scrollLeftRef = useRef(0);
+  const [removeAnimal] = useMutation(REMOVE_ANIMAL);
 
   // Function to remove an animal from favorites
-  const removeFavorite = (animalId: string) => {
+  const handleRemoveAnimal = async (animal: AnimalType) => {
+
+    try {
+      console.log('Removing animal:', animal);
+      const animalInput = {
+        _id: animal._id,
+        commonName: animal.commonName,
+        scientificName: animal.scientificName
+      };
+
+      const {data} = await removeAnimal({
+        variables: {animalData: animalInput},
+      });
+      console.log('Animal removed:', data.removeAnimal);
+    } catch (error) {
+      console.error('Error removing animal:', error);
+    }
+
     setFavorites((prevFavorites) =>
-      prevFavorites.filter((animal) => animal._id !== animalId)
+      prevFavorites.filter((anima) => anima._id !== animal._id)
     );
   };
-
-  
 
   // Handle mouse down event to start dragging
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -66,7 +83,7 @@ function Favorites() {
             <h3>{animal.commonName}</h3>
             <p><em>{animal.scientificName}</em></p>
             <p>Status: {animal.conservationStatus}</p>
-            <button onClick={() => removeFavorite(animal._id)}>Remove</button>
+            <button onClick={() => handleRemoveAnimal(animal)}>Remove</button>
           </div>
         ))}
       </div>
