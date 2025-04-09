@@ -43,7 +43,7 @@ const typeDefs = `
 
     addAnimal(animalInput: animalInput): User
 
-    removeAnimal(input: animalInput): User
+    removeAnimal(animalInput: animalInput): User
   }
 `;
 
