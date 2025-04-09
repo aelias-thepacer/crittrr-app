@@ -1,8 +1,11 @@
-import { useEffect, useState, useRef } from 'react';
+import {  useState, useRef } from 'react';
 import { AnimalType } from '../../interfaces/AnimalType';
+import {  QUERY_ME } from '../../utils/queries.ts';
+import { useQuery } from '@apollo/client';
+
 
 function Favorites() {
-  const [favorites, setFavorites] = useState<AnimalType[]>([]);
+  const [favorites, setFavorites] = useState<AnimalType[]>(useQuery(QUERY_ME).data?.me.favoriteAnimals || [])
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const isDraggingRef = useRef(false);
   const startXRef = useRef(0);
@@ -15,10 +18,10 @@ function Favorites() {
     );
   };
 
-  useEffect(() => {
-    const favoriteAnimals = JSON.parse(localStorage.getItem('favoriteAnimals') || '[]');
-    setFavorites(favoriteAnimals);
-  }, []);
+  // useEffect(() => {
+  //   const favoriteAnimals = JSON.parse(localStorage.getItem('favoriteAnimals') || '[]');
+  //   setFavorites(favoriteAnimals);
+  // }, []);
 
   // Handle mouse down event to start dragging
   const handleMouseDown = (e: React.MouseEvent) => {
