@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef } from 'react';
+import {  useState, useRef } from 'react';
 import { AnimalType } from '../../interfaces/AnimalType';
-import { QUERY_ANIMALS, QUERY_ME } from '../../utils/queries.ts';
+import {  QUERY_ME } from '../../utils/queries.ts';
 import { useQuery } from '@apollo/client';
 
 
