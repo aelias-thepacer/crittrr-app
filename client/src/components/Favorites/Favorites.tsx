@@ -1,8 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { AnimalType } from '../../interfaces/AnimalType';
 
 function Favorites() {
   const [favorites, setFavorites] = useState<AnimalType[]>([]);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
 
   // Function to remove an animal from favorites
   const removeFavorite = (animalId: string) => {
@@ -11,16 +15,50 @@ function Favorites() {
     );
   };
 
-
   useEffect(() => {
     const favoriteAnimals = JSON.parse(localStorage.getItem('favoriteAnimals') || '[]');
     setFavorites(favoriteAnimals);
   }, []);
 
+  // Handle mouse down event to start dragging
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (scrollContainerRef.current) {
+      isDraggingRef.current = true;
+      startXRef.current = e.pageX - scrollContainerRef.current.offsetLeft;
+      scrollLeftRef.current = scrollContainerRef.current.scrollLeft;
+    }
+  };
+
+  // Handle mouse move event to drag horizontally only
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDraggingRef.current || !scrollContainerRef.current) return;
+
+    // Calculate the horizontal movement only
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startXRef.current) * 2; // Adjust the speed by multiplying
+    scrollContainerRef.current.scrollLeft = scrollLeftRef.current - walk;
+  };
+
+  // Handle mouse up event to stop dragging
+  const handleMouseUp = () => {
+    isDraggingRef.current = false;
+  };
+
+  // Handle mouse leave event to stop dragging if mouse leaves the container
+  const handleMouseLeave = () => {
+    isDraggingRef.current = false;
+  };
 
   return (
     <div>
-      <div className="scroll-container">
+      <div
+        className="scroll-container"
+        ref={scrollContainerRef}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseLeave}
+      >
         {favorites.map((animal) => (
           <div className="card" key={animal._id}>
             <img src={animal.imageLink} alt={animal.commonName} />
@@ -39,6 +77,7 @@ function Favorites() {
           padding: 1rem;
           gap: 1rem;
           scroll-snap-type: x mandatory;
+          cursor: grab;
         }
 
         .card {
@@ -72,7 +111,7 @@ function Favorites() {
         .card button {
           margin-top: 0.5rem;
           padding: 0.5rem 1rem;
-          background-color:rgb(253, 38, 38);
+          background-color: rgb(253, 38, 38);
           color: white;
           border: solid 1px #000;
           border-radius: 8px;
@@ -80,7 +119,7 @@ function Favorites() {
         }
 
         .card button:hover {
-          background-color:rgb(185, 18, 18);
+          background-color: rgb(185, 18, 18);
         }
 
         /* Optional: Hide scrollbar on Webkit browsers */
@@ -90,6 +129,11 @@ function Favorites() {
         .scroll-container {
           -ms-overflow-style: none; /* IE and Edge */
           scrollbar-width: none; /* Firefox */
+        }
+
+        /* Change cursor to grabbing when dragging */
+        .scroll-container:active {
+          cursor: grabbing;
         }
       `}</style>
 
