@@ -22,17 +22,21 @@ const Signup = () => {
       [name]: value,
     });
   };
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleFormSubmit = async (event: FormEvent) => {
     event.preventDefault();
-
+    if (isLoading)
+      return
+    setIsLoading(true);
     try {
       const { data } = await addUser({
         variables: { input: { ...formState } },
       });
-
+      setIsLoading(false);
       Auth.login(data.addUser.token);
     } catch (e) {
+      setIsLoading(false);
       console.error(e);
     }
   };
@@ -79,7 +83,7 @@ const Signup = () => {
                   style={{ cursor: 'pointer' }}
                   type="submit"
                 >
-                  Submit
+                  {isLoading ? 'Signing up' : 'Submit'}
                 </button>
               </form>
             )}
