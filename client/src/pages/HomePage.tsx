@@ -6,7 +6,6 @@ import { ADD_ANIMAL } from '../utils/mutations.ts';
 
 import { AnimalType } from '../interfaces/AnimalType.tsx';
 
-
 const HomePage = () => {
   // Fetch animal data from query
   const { loading, data } = useQuery(QUERY_ANIMALS);
@@ -20,6 +19,9 @@ const HomePage = () => {
 
   const [addAnimal] = useMutation(ADD_ANIMAL);
 
+  // State for showing the success message
+  const [showMessage, setShowMessage] = useState(false);
+
   const handleAddAnimal = async (animal: AnimalType) => {
     try {
       console.log('Adding animal:', animal);
@@ -32,6 +34,13 @@ const HomePage = () => {
         variables: {animalData: animalInput},
       });
       console.log('Animal added:', data.addAnimal);
+      // Show the success message when the animal is added
+      setShowMessage(true);
+
+      // Hide the message after 3 seconds
+      setTimeout(() => {
+        setShowMessage(false);
+      }, 3000);
     } catch (error) {
       console.log("Data:", data);
       console.log("Animal:", animal);
@@ -45,9 +54,15 @@ const HomePage = () => {
 
   // Handle drag/touch start
   const handleMouseDown = (e: React.MouseEvent | React.TouchEvent) => {
+    // Disable text selection while dragging
+    document.body.style.userSelect = 'none';
+
     // Get initial X position from mouse or touch
     const startX = 'touches' in e ? e.touches[0].clientX : e.clientX;
     dragStartX.current = startX;
+
+    // Track the distance moved
+    let deltaX = 0;
 
     // Function to handle movement during drag/swipe
     const handleMove = (moveEvent: MouseEvent | TouchEvent) => {
@@ -56,11 +71,12 @@ const HomePage = () => {
           ? (moveEvent as TouchEvent).touches[0].clientX
           : (moveEvent as MouseEvent).clientX;
 
-      const deltaX = currentX - dragStartX.current;
+      // Calculate the distance moved, from start to current position
+      deltaX = currentX - dragStartX.current;
 
       // Move the card based on drag
       if (cardRef.current) {
-        cardRef.current.style.transform = `translateX(${deltaX}px) rotate(${deltaX / 15}deg)`;
+        cardRef.current.style.transform = `translateX(${deltaX}px) rotate(${deltaX / 15}deg)`; // Adjust rotation based on drag distance
       }
     };
 
@@ -76,9 +92,18 @@ const HomePage = () => {
       } else {
         // Reset position if swipe was not far enough
         if (cardRef.current) {
+          cardRef.current.style.transition = 'transform 0.3s ease';
           cardRef.current.style.transform = 'translateX(0px) rotate(0deg)';
+          setTimeout(() => {
+            if (cardRef.current) {
+              cardRef.current.style.transition = '';
+            }
+          }, 300);
         }
       }
+
+      // Enable text selection again after drag ends
+      document.body.style.userSelect = '';
 
       // Remove event listeners after drag ends
       window.removeEventListener('mousemove', handleMove);
@@ -117,9 +142,8 @@ const HomePage = () => {
         );
 
         if (!alreadyFavorited) {
-          // favoriteAnimals.push(currentAnimal);
           handleAddAnimal(currentAnimal);
-          // add to favorites
+          // Add to favorites
           setFavorites((prev) => [...prev, currentAnimal]);
         }
       }
@@ -148,7 +172,7 @@ const HomePage = () => {
   if (!currentAnimal && animals.length > 0) {
     randomizeAnimal();
   }
-  // Main 
+
   return (
     <main style={{ textAlign: 'center', padding: '20px' }}>
       <div className="flex-row justify-center">
@@ -180,9 +204,10 @@ const HomePage = () => {
               borderRadius: '16px',
               padding: '16px',
               boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
-              transition: 'transform 0.3s ease',
+              transition: 'transform 02s ease-in-out',
               cursor: 'grab',
               color: '#000', // Ensure text is readable on gradient
+              willChange: 'transform', // Optimize for performance
             }}
           >
             {/* Display animal image and info */}
@@ -206,8 +231,29 @@ const HomePage = () => {
           <p>No more animals to show.</p>
         )}
       </div>
+
+      {/* Show "Animal added" message */}
+      {showMessage && (
+        <div style={messageStyle}>
+          Animal added to favorites!
+        </div>
+      )}
     </main>
   );
+};
+
+// Add some basic styles for the message
+const messageStyle: React.CSSProperties = {
+  position: 'fixed',
+  bottom: '20px',
+  left: '50%',
+  transform: 'translateX(-50%)',
+  padding: '10px 20px',
+  background: 'linear-gradient(to bottom, #4facfe, #00f2fe)',
+  color: 'white',
+  borderRadius: '5px',
+  zIndex: 1000,
+  transition: 'opacity 0.5s ease-in-out',
 };
 
 export default HomePage;
