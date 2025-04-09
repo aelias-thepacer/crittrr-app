@@ -53,6 +53,9 @@ const HomePage = () => {
     const startX = 'touches' in e ? e.touches[0].clientX : e.clientX;
     dragStartX.current = startX;
 
+    // Track the distance moved
+    let deltaX = 0;
+
     // Function to handle movement during drag/swipe
     const handleMove = (moveEvent: MouseEvent | TouchEvent) => {
       const currentX =
@@ -60,11 +63,12 @@ const HomePage = () => {
           ? (moveEvent as TouchEvent).touches[0].clientX
           : (moveEvent as MouseEvent).clientX;
 
-      const deltaX = currentX - dragStartX.current;
+      // Calculate the distance moved, from start to current position
+      deltaX = currentX - dragStartX.current;
 
       // Move the card based on drag
       if (cardRef.current) {
-        cardRef.current.style.transform = `translateX(${deltaX}px) rotate(${deltaX / 15}deg)`;
+        cardRef.current.style.transform = `translateX(${deltaX}px) rotate(${deltaX / 15}deg)`; // Adjust rotation based on drag distance
       }
     };
 
@@ -80,7 +84,13 @@ const HomePage = () => {
       } else {
         // Reset position if swipe was not far enough
         if (cardRef.current) {
+          cardRef.current.style.transition = 'transform 0.3s ease';
           cardRef.current.style.transform = 'translateX(0px) rotate(0deg)';
+          setTimeout(() => {
+            if (cardRef.current) {
+              cardRef.current.style.transition = '';
+            }
+          }, 300);
         }
       }
 
@@ -186,9 +196,10 @@ const HomePage = () => {
               borderRadius: '16px',
               padding: '16px',
               boxShadow: '0 4px 10px rgba(0,0,0,0.1)',
-              transition: 'transform 0.3s ease',
+              transition: 'transform 02s ease-in-out',
               cursor: 'grab',
               color: '#000', // Ensure text is readable on gradient
+              willChange: 'transform', // Optimize for performance
             }}
           >
             {/* Display animal image and info */}
@@ -230,7 +241,7 @@ const messageStyle: React.CSSProperties = {
   left: '50%',
   transform: 'translateX(-50%)',
   padding: '10px 20px',
-  backgroundColor: 'linear-gradient(to bottom, #4facfe, #00f2fe)',
+  background: 'linear-gradient(to bottom, #4facfe, #00f2fe)',
   color: 'white',
   borderRadius: '5px',
   zIndex: 1000,
