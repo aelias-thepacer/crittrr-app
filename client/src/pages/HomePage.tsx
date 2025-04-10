@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { QUERY_ANIMALS, QUERY_ME } from '../utils/queries.ts';
 import { useMutation } from '@apollo/client';
@@ -7,43 +7,87 @@ import { ADD_ANIMAL } from '../utils/mutations.ts';
 import { AnimalType } from '../interfaces/AnimalType.tsx';
 
 const HomePage = () => {
-  // Fetch animal data from query
+  // Fetch animal data from queries
   const { loading, data } = useQuery(QUERY_ANIMALS);
+  const { data: meData } = useQuery(QUERY_ME); // Separate query for user data
   const animals: AnimalType[] = data?.animals || [];
 
   // State to store the current animal
   const [currentAnimal, setCurrentAnimal] = useState<AnimalType | null>(null);
 
   // State to store user's favorite animals
-  const [favorites, setFavorites] = useState<AnimalType[]>(useQuery(QUERY_ME).data?.me.favoriteAnimals || [])
+  const [favorites, setFavorites] = useState<AnimalType[]>([]);
 
   const [addAnimal] = useMutation(ADD_ANIMAL);
+
+  // State to store the recently added animal
+  const [recentlyAddedAnimal, setRecentlyAddedAnimal] = useState<AnimalType | null>(null);
 
   // State for showing the success message
   const [showMessage, setShowMessage] = useState(false);
 
+  // State for showing the login message
+  const [loginMessage, setLoginMessage] = useState(false);
+
+  // State for showing the dislike message
+  const [dislikeMessage, setDislikeMessage] = useState(false);
+
+  // Timeout reference to manage the message visibility timer
+  const messageTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Update favorites when `meData` becomes available
+  useEffect(() => {
+    if (meData?.me?.favoriteAnimals) {
+      setFavorites(meData.me.favoriteAnimals);
+    }
+  }, [meData]);
+
   const handleAddAnimal = async (animal: AnimalType) => {
+    if (!meData?.me) {
+      // User is not logged in, show login message
+      setLoginMessage(true);
+
+      // Clear the previous timeout if it exists
+      if (messageTimeoutRef.current) {
+        clearTimeout(messageTimeoutRef.current);
+      }
+
+      // Start a new timeout to hide the message after 3 seconds
+      messageTimeoutRef.current = setTimeout(() => {
+        setLoginMessage(false);
+        messageTimeoutRef.current = null; // Reset the timeout reference
+      }, 3000);
+
+      return;
+    }
+
     try {
       console.log('Adding animal:', animal);
       const animalInput = {
         _id: animal._id,
         commonName: animal.commonName,
-        scientificName: animal.scientificName
+        scientificName: animal.scientificName,
       };
-      const {data} = await addAnimal({
-        variables: {animalData: animalInput},
+      const { data } = await addAnimal({
+        variables: { animalData: animalInput },
       });
       console.log('Animal added:', data.addAnimal);
-      // Show the success message when the animal is added
+
+      // Set the recently added animal and show the success message
+      setRecentlyAddedAnimal(animal);
       setShowMessage(true);
 
-      // Hide the message after 3 seconds
-      setTimeout(() => {
+      // Clear the previous timeout if it exists
+      if (messageTimeoutRef.current) {
+        clearTimeout(messageTimeoutRef.current);
+      }
+
+      // Start a new timeout to hide the message after 3 seconds
+      messageTimeoutRef.current = setTimeout(() => {
         setShowMessage(false);
+        messageTimeoutRef.current = null; // Reset the timeout reference
       }, 3000);
     } catch (error) {
-      console.log("Data:", data);
-      console.log("Animal:", animal);
       console.error('Error adding animal:', error);
     }
   };
@@ -132,20 +176,78 @@ const HomePage = () => {
   // Handle swipe left or right
   const handleSwipe = (direction: 'left' | 'right') => {
     if (currentAnimal) {
-      // If swiped right, add animal to favorites and store in localStorage
       if (direction === 'right') {
-        setFavorites((prev) => [...prev, currentAnimal]);
+        // Reset other messages
+        setDislikeMessage(false);
 
-        // Check if the animal is already in favorites
-        const alreadyFavorited = favorites.some(
-          (animal) => animal._id === currentAnimal._id
-        );
+        // Check if the user is logged in
+        if (!meData?.me) {
+          // Set the recently added animal to show its name in the login message
+          setRecentlyAddedAnimal(currentAnimal);
 
-        if (!alreadyFavorited) {
-          handleAddAnimal(currentAnimal);
-          // Add to favorites
+          // Show the login message
+          setLoginMessage(true);
+
+          // Clear the previous timeout if it exists
+          if (messageTimeoutRef.current) {
+            clearTimeout(messageTimeoutRef.current);
+          }
+
+          // Start a new timeout to hide the message after 3 seconds
+          messageTimeoutRef.current = setTimeout(() => {
+            setLoginMessage(false);
+            messageTimeoutRef.current = null; // Reset the timeout reference
+          }, 3000);
+        } else {
+          // Add animal to favorites if logged in
           setFavorites((prev) => [...prev, currentAnimal]);
+
+          // Check if the animal is already in favorites
+          const alreadyFavorited = favorites.some(
+            (animal) => animal._id === currentAnimal._id
+          );
+
+          if (!alreadyFavorited) {
+            handleAddAnimal(currentAnimal);
+            setFavorites((prev) => [...prev, currentAnimal]);
+          }
+
+          // Show "Animal added" message
+          setRecentlyAddedAnimal(currentAnimal);
+          setShowMessage(true);
+
+          // Clear the previous timeout if it exists
+          if (messageTimeoutRef.current) {
+            clearTimeout(messageTimeoutRef.current);
+          }
+
+          // Start a new timeout to hide the message after 3 seconds
+          messageTimeoutRef.current = setTimeout(() => {
+            setShowMessage(false);
+            messageTimeoutRef.current = null; // Reset the timeout reference
+          }, 3000);
         }
+      } else if (direction === 'left') {
+        // Reset other messages
+        setLoginMessage(false);
+        setShowMessage(false);
+
+        // Set the recently added animal to show its name in the dislike message
+        setRecentlyAddedAnimal(currentAnimal);
+
+        // Show dislike message
+        setDislikeMessage(true);
+
+        // Clear the previous timeout if it exists
+        if (messageTimeoutRef.current) {
+          clearTimeout(messageTimeoutRef.current);
+        }
+
+        // Start a new timeout to hide the dislike message after 3 seconds
+        messageTimeoutRef.current = setTimeout(() => {
+          setDislikeMessage(false);
+          messageTimeoutRef.current = null; // Reset the timeout reference
+        }, 3000);
       }
 
       // Animate the card flying off screen
@@ -233,9 +335,23 @@ const HomePage = () => {
       </div>
 
       {/* Show "Animal added" message */}
-      {showMessage && (
+      {showMessage && recentlyAddedAnimal && (
         <div style={messageStyle}>
-          Animal added to favorites!
+          {recentlyAddedAnimal.commonName} added to favorites!
+        </div>
+      )}
+
+      {/* Show "Login required" message */}
+      {loginMessage && (
+        <div style={messageStyle}>
+          You need to login to add {recentlyAddedAnimal?.commonName || 'this animal'} to favorites
+        </div>
+      )}
+
+      {/* Show "Dislike" message */}
+      {dislikeMessage && recentlyAddedAnimal && (
+        <div style={messageStyle}>
+          You didn't like {recentlyAddedAnimal.commonName}.
         </div>
       )}
     </main>
@@ -244,16 +360,15 @@ const HomePage = () => {
 
 // Add some basic styles for the message
 const messageStyle: React.CSSProperties = {
-  position: 'fixed',
-  bottom: '20px',
-  left: '50%',
-  transform: 'translateX(-50%)',
-  padding: '10px 20px',
+  display: 'inline-block', // Ensures it only takes the space it needs
+  padding: '5px 10px', // Smaller padding for breathability
   background: 'linear-gradient(to bottom, #4facfe, #00f2fe)',
-  color: 'white',
+  color: 'black',
+  border: '1px solid #000',
   borderRadius: '5px',
-  zIndex: 1000,
   transition: 'opacity 0.5s ease-in-out',
+  marginTop: '10px', // Adds a little space from the text above
+  textAlign: 'center', // Ensures the text is centered
 };
 
 export default HomePage;

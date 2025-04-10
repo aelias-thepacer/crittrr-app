@@ -20,7 +20,6 @@ const Footer: React.FC = () => {
             className="btn btn-dark mb-3"
             onClick={handleGoBack}
             style={{
-              background: 'linear-gradient(to bottom, #4facfe, #00f2fe)',
               border: '1px solid #000',
               borderRadius: '16px',
               color: 'black', // Set text color to black
