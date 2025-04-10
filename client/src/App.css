@@ -1046,17 +1046,30 @@ a:hover {
   border-width: 1px;
 }
 
+.btn.btn-lightt {
+  background-color: #04c0c0;
+  border: solid #000;
+  border-width: 1px;
+}
+
+.btn.btn-lightt:hover {
+  background-color: #04c033;
+  color: black;
+}
+
 .btn.btn-light:hover {
   background-color: #f73434;
 }
 
 .btn.btn-dark {
-  background-color: #000a63;
+  background: linear-gradient(to bottom, #4facfe, #00f2fe);
   color: #d9e9e8;
+  transition: background-color 0.3s ease-in-out, background 0.3s ease-in-out;
 }
 
 .btn.btn-dark:hover {
-  background-color: #0015ce;
+  background: linear-gradient(to bottom, #2867b9, #00d4fd);
+  color: #ffffff;
 }
 
 .btn.btn-white {

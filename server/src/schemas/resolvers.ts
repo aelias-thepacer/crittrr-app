@@ -74,6 +74,8 @@ const resolvers = {
     },
     
     login: async (_parent: any, { email, password }: LoginUserArgs) => {
+      console.log(email);
+      console.log(password);
       // Find a user with the provided email
       const user = await User.findOne({ email });
     

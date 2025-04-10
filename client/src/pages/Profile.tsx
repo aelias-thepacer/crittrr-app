@@ -15,6 +15,7 @@ const Profile = () => {
 
   const { loading, data } = useQuery(QUERY_ME, {
     variables: { username: userParam },
+    fetchPolicy: 'network-only', // Always fetch the latest data from the server
   });
 
   const user = data?.me || data?.user;

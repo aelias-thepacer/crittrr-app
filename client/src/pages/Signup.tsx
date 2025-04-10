@@ -44,8 +44,17 @@ const Signup = () => {
   return (
     <main className="flex-row justify-center mb-4">
       <div className="col-12 col-lg-10">
-        <div className="card">
-          <h4 className="card-header bg-dark text-light p-2">Sign Up</h4>
+        <div className="card" style={{ borderRadius: '15px' }}>
+            <h4
+              className="card-header text-black p-2 text-center"
+              style={{
+              background: 'linear-gradient(to bottom,rgb(0, 153, 255),rgb(6, 81, 212))',
+              borderTopLeftRadius: '15px',
+              borderTopRightRadius: '15px',
+              }}
+            >
+              Sign Up
+            </h4>
           <div className="card-body">
             {data ? (
               <p>
@@ -72,7 +81,7 @@ const Signup = () => {
                 />
                 <input
                   className="form-input"
-                  placeholder="******"
+                  placeholder="Your password"
                   name="password"
                   type="password"
                   value={formState.password}
@@ -80,7 +89,13 @@ const Signup = () => {
                 />
                 <button
                   className="btn btn-block btn-primary"
-                  style={{ cursor: 'pointer' }}
+                  style={{
+                  cursor: 'pointer',
+                  background: 'linear-gradient(to bottom,rgb(32, 119, 196),rgb(1, 184, 194))',
+                  color: 'black',
+                  border: '1px solid #000',
+                  fontSize: '1.25rem', // Increased font size
+                  }}
                   type="submit"
                 >
                   {isLoading ? 'Signing up' : 'Submit'}
