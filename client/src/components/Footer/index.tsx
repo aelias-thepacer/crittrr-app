@@ -38,7 +38,7 @@ const Footer: React.FC = () => {
           >
             ❤️
           </span>{' '}
-          by the Crttrr Team!
+          by the Crittrr Team!
         </h4>
       </div>
     </footer>
